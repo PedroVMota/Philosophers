@@ -15,7 +15,5 @@
 void	parse_error(t_table *table, char *msg)
 {
 	printf("%s", msg);
-	if (table->philosophers != NULL)
-		free(table->philosophers);
 	exit(EXIT_FAILURE);
 }

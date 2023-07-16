@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 typedef struct s_table
 {
@@ -19,6 +20,8 @@ typedef struct s_table
 
 //parsing
 long	ft_atoi(const char *str);
+t_table *table(void);
+int	setup(t_table *table, char **av);
 void parse_error(t_table *table, char *msg);
 
 #endif
