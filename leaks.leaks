@@ -1,0 +1,24 @@
+Process:         philosophers [11637]
+Path:            /Users/USER/Desktop/*/philosophers
+Load Address:    0x100fc8000
+Identifier:      philosophers
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  leaks [11636]
+
+Date/Time:       2023-07-15 21:08:22.304 +0100
+Launch Time:     2023-07-15 21:08:21.913 +0100
+OS Version:      macOS 13.4.1 (22F82)
+Report Version:  7
+Analysis Tool:   /usr/bin/leaks
+
+Physical footprint:         25.7M
+Physical footprint (peak):  25.9M
+Idle exit:                  untracked
+----
+
+leaks Report Version: 4.0, multi-line stacks
+Process 11637: 1 nodes malloced for 0 KB
+Process 11637: 0 leaks for 0 total leaked bytes.
+

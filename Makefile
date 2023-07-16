@@ -1,5 +1,5 @@
 PROJECT_NAME = philosophers
-RULES = -Wall -Wextra -Werror -pthread -g
+RULES = -Wall -Wextra -Werror -pthread -g -fsanitize=address
 INCLUDE = -I include/
 APP = philosophers
 FILES = $(wildcard src/*.c)
@@ -13,6 +13,11 @@ $(APP): $(FILES_OBJ)
 %.o: %.c
 	cc $(RULES) $(INCLUDE) -c $< -o $@
 
+run:
+	./philosophers 1 1 1 1 1
+
+leak:
+	leaks -atExit -- ./philosophers 10 1 1 1 1 > leaks.leaks 
 clean:
 	rm -rf $(FILES_OBJ)
 
@@ -20,4 +25,6 @@ fclean: clean
 	rm -rf $(APP)
 
 re: fclean all
+
+
 
