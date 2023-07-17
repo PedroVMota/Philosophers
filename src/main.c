@@ -6,7 +6,7 @@
 /*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 20:59:57 by pedromota         #+#    #+#             */
-/*   Updated: 2023/07/15 21:08:38 by pedromota        ###   ########.fr       */
+/*   Updated: 2023/07/17 13:46:30 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,20 @@
 void *routine(void *id)
 {
 	struct timeval last_meal, current_time;
+    
 	gettimeofday(&last_meal, NULL);
 
 	int i = 0;
 	while (i < 2)
 	{
 		gettimeofday(&current_time, NULL);
-        long milliseconds_since_last_meal = (current_time.tv_sec - last_meal.tv_sec) * 1000 +
-                                            (current_time.tv_usec - last_meal.tv_usec) / 1000;
-        long milliseconds_since_start = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-
-        printf("%ld %d is living!\n", milliseconds_since_start, *(int *)id);
-
-        if (milliseconds_since_last_meal > table()->time_to_die)
-        {
-            printf("%ld %d died!\n", milliseconds_since_start, *(int *)id);
-            break;
-        }
+        long long ms_since_last_meal = (current_time.tv_usec - last_meal.tv_usec);
+        long long ms_since_start = (current_time.tv_usec + current_time.tv_usec) / 1000;
+        printf("ms_since_last_meal: %lld\n", ms_since_last_meal / 1000);
+        printf("ms_since_start: %lld\n", ms_since_start );
+        break;
 	}
+    return (NULL);
 }
 
 void philosophers_init(t_table *center)

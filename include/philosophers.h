@@ -17,6 +17,12 @@ typedef struct s_table
     pthread_t *philosophers;
 } t_table;
 
+typedef struct s_convertion_usec_to_ms
+{
+    long long microseconds;
+    long long miliseconds;
+} t_convertion_usec_to_ms;
+
 
 //parsing
 long	ft_atoi(const char *str);

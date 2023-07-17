@@ -3,9 +3,9 @@
 t_table *table(void)
 {
 	static t_table table;
-
 	return &table;
 }
+
 
 int	setup(t_table *table, char **av)
 {
