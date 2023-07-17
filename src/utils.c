@@ -22,6 +22,11 @@ int	setup(t_table *table, char **av)
 		* table->philo_n);
 	if (!table->philosophers)
 		return (1);
+    table->forks = (pfork_t *)malloc(sizeof(pfork_t) * table->philo_n);
+    if(!table->forks)
+        return 1;
+    for (int x = 0; x < table->philo_n; x++)
+        table->forks[x] = 1;
 	return (0);
 }
 

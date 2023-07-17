@@ -10,6 +10,8 @@ all: $(APP)
 $(APP): $(FILES_OBJ)
 	cc $(RULES) $(INCLUDE) $(FILES_OBJ) -o $(APP)
 
+test: $(APP)
+	./philosophers 5 1 1 1 1
 %.o: %.c
 	cc $(RULES) $(INCLUDE) -c $< -o $@
 

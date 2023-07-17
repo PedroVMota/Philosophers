@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/time.h>
-
+typedef int pfork_t;
 typedef struct s_table
 {
     long long philo_n;
@@ -14,6 +14,7 @@ typedef struct s_table
     long long time_to_eat;
     long long time_to_sleep;
     long long n_of_eats;
+    long *forks;
     pthread_t *philosophers;
 } t_table;
 

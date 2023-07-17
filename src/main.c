@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pvital-m <pvital-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 20:59:57 by pedromota         #+#    #+#             */
-/*   Updated: 2023/07/17 13:46:30 by pedromota        ###   ########.fr       */
+/*   Updated: 2023/07/17 15:42:23 by pvital-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void *routine(void *id)
 	while (i < 2)
 	{
 		gettimeofday(&current_time, NULL);
-        long long ms_since_last_meal = (current_time.tv_usec - last_meal.tv_usec);
+        long long ms_since_last_meal = (current_time.tv_usec - last_meal.tv_usec) / 1000;
         long long ms_since_start = (current_time.tv_usec + current_time.tv_usec) / 1000;
-        printf("ms_since_last_meal: %lld\n", ms_since_last_meal / 1000);
-        printf("ms_since_start: %lld\n", ms_since_start );
+		printf("Philosopther %d Milliseconds from the last meal: %d\n", * (int *) id,  ms_since_last_meal);
+		printf("Philosopther %d from the start: %d\n", * (int *) id,  ms_since_start);
         break;
 	}
     return (NULL);
