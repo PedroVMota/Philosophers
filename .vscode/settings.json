@@ -4,6 +4,9 @@
         "get_next_line_bonus.h": "c",
         "ft_colors.h": "c",
         "stdio.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "__locale": "c",
+        "locale": "c",
+        "unistd.h": "c"
     }
 }

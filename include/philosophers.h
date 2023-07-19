@@ -1,33 +1,41 @@
 #ifndef PHILOSOPHERS_h
 # define PHILOSOPHERS_h
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/time.h>
+# include <ft_colors.h>
+# include <pthread.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <unistd.h>
+
+# define HERE printf("HERE\n\n");
+typedef struct s_philo
+{
+	int				id;
+	bool			is_dead;
+	int				eat_count;
+	int				last_eat;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	bool			left_fork_taken;
+	bool			right_fork_taken;
+	struct s_philo	*next;
+}					t_philo;
 
 typedef struct s_table
 {
-    long long philo_n;
-    long long time_to_die;
-    long long time_to_eat;
-    long long time_to_sleep;
-    long long n_of_eats;
-    pthread_t *philosophers;
-} t_table;
+	int				philo_num;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
+	pthread_t		*threads;
+	t_philo			*head;
+	t_philo			*tail;
+}					t_table;
 
-typedef struct s_convertion_usec_to_ms
-{
-    long long microseconds;
-    long long miliseconds;
-} t_convertion_usec_to_ms;
-
-
-//parsing
-long	ft_atoi(const char *str);
-t_table *table(void);
-int	setup(t_table *table, char **av);
-void parse_error(t_table *table, char *msg);
-
+long				ft_atoi(const char *str);
+void				print_philo(t_table *center);
+void				addlast_philo(t_table **table, int id);
 #endif

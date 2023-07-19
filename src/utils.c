@@ -1,30 +1,5 @@
 #include "philosophers.h"
 
-t_table *table(void)
-{
-	static t_table table;
-	return &table;
-}
-
-
-int	setup(t_table *table, char **av)
-{
-	table->philo_n = ft_atoi(av[1]);
-	table->time_to_die = ft_atoi(av[2]);
-	table->time_to_eat = ft_atoi(av[3]);
-	table->time_to_sleep = ft_atoi(av[4]);
-	table->n_of_eats = ft_atoi(av[5]);
-	if (table->philo_n == 0 || table->time_to_die == 0
-		|| table->time_to_eat == 0 || table->time_to_sleep == 0
-		|| table->n_of_eats == 0)
-		return (1);
-	table->philosophers = (pthread_t *)malloc(sizeof(pthread_t)
-		* table->philo_n);
-	if (!table->philosophers)
-		return (1);
-	return (0);
-}
-
 long	ft_atoi(const char *str)
 {
 	long	i;
