@@ -1,58 +1,53 @@
-#include "philosophers.h"
+#include <philosophers.h>
 
-t_table *table(void)
+void	clear_data(struct s_table	*data)
 {
-	static t_table table;
-	return &table;
+	if (data->tid)
+		free(data->tid);
+	if (data->forks)
+		free(data->forks);
+	if (data->philos)
+		free(data->philos);
 }
 
 
-int	setup(t_table *table, char **av)
+void	ft_exit(struct s_table *data)
 {
-	table->philo_n = ft_atoi(av[1]);
-	table->time_to_die = ft_atoi(av[2]);
-	table->time_to_eat = ft_atoi(av[3]);
-	table->time_to_sleep = ft_atoi(av[4]);
-	table->n_of_eats = ft_atoi(av[5]);
-	if (table->philo_n == 0 || table->time_to_die == 0
-		|| table->time_to_eat == 0 || table->time_to_sleep == 0
-		|| table->n_of_eats == 0)
-		return (1);
-	table->philosophers = (pthread_t *)malloc(sizeof(pthread_t)
-		* table->philo_n);
-	if (!table->philosophers)
-		return (1);
-    table->forks = (pfork_t *)malloc(sizeof(pfork_t) * table->philo_n);
-    if(!table->forks)
-        return 1;
-    for (int x = 0; x < table->philo_n; x++)
-        table->forks[x] = 1;
-	return (0);
+	int	i;
+
+	i = -1;
+	while (++i < data->philo_num)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philo[i].lock);
+	}
+	pthread_mutex_destroy(&data->write);
+	pthread_mutex_destroy(&data->lock);
+	clear_data(data);
 }
 
-long	ft_atoi(const char *str)
+int	error(char *str, struct s_table *data)
 {
-	long	i;
-	long	total;
-	long	sign;
+	printf("%s\n", str);
+	if (data)
+		ft_exit(data);
+	return (1);
+}
 
-	sign = 1;
-	total = 0;
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-')
-	{
-		sign = -sign;
-		i++;
-	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		total *= 10;
-		total += str[i] - 48;
-		i++;
-	}
-	return (total * sign);
+int64_t	get_time(void)
+{
+	struct timeval	tv;
+	
+	if (gettimeofday(&tv, NULL))
+		return (error("gettimeofday() FAILURE\n", NULL));
+	return ((tv.tv_sec * (int64_t)1000) + (tv.tv_usec / 1000));
+}
+
+int	ft_usleep(suseconds_t time)
+{
+	int64_t	start;
+	start = get_time();
+	while ((get_time() - start) < time)
+		usleep(time / 10);
+	return(0);
 }

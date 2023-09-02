@@ -1,40 +1,50 @@
 #ifndef PHILOSOPHERS_h
 # define PHILOSOPHERS_h
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/time.h>
-typedef int pfork_t;
+# include <pthread.h>
+# include <stdbool.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+#include <sys/types.h>
 
-typedef struct s_philosopher
+# include <unistd.h>
+
+# define MEMDEB(content) printf("%s:%p\n", content, content);
+
+typedef struct s_philo
 {
-    int *id;
+	struct s_data	*data;
+	pthread_t       t1;
+	int             id;
+	int             eat_cont;
+	int             status;
+	int             eating;
+	uint64_t        time_to_die;
+	pthread_mutex_t	lock;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
+} t_philo;
 
+struct			s_table
+{
+	pthread_t	*thread_id;
+	int			philo_n;
+	int			meals_n;
+	int			dead;
+	int			finished;
+	t_philo		*philo;
+	int64_t		death_time;
+	int64_t		eat_time;
+	int64_t		sleep_time;
+	int64_t		start_time;
+    pthread_mutex_t *forks;
+	pthread_mutex_t lock;
+	pthread_mutex_t write;
 };
-typedef struct s_table
-{
-    long long philo_n;
-    long long time_to_die;
-    long long time_to_eat;
-    long long time_to_sleep;
-    long long n_of_eats;
-    int *forks;
-    pthread_t *philosophers;
-} t_table;
 
-typedef struct s_convertion_usec_to_ms
-{
-    long long microseconds;
-    long long miliseconds;
-} t_convertion_usec_to_ms;
-
-
-//parsing
-long	ft_atoi(const char *str);
-t_table *table(void);
-int	setup(t_table *table, char **av);
-void parse_error(t_table *table, char *msg);
+// parsing
+long			ft_atoi(const char *str);
 
 #endif

@@ -1,5 +1,5 @@
 PROJECT_NAME = philosophers
-RULES = -pthread -g #-Wall -Wextra -Werror 
+RULES = -pthread -g -fsanitize=address #-Wall -Wextra -Werror 
 INCLUDE = -I include/
 APP = philosophers
 FILES = $(wildcard src/*.c)
@@ -12,6 +12,7 @@ $(APP): $(FILES_OBJ)
 
 test: $(APP)
 	./philosophers 5 1 1 1 1
+	
 %.o: %.c
 	cc $(RULES) $(INCLUDE) -c $< -o $@
 
