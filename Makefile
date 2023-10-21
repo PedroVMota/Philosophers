@@ -1,26 +1,25 @@
-PROJECT_NAME = philosophers
-RULES = -pthread -g -fsanitize=address #-Wall -Wextra -Werror 
-INCLUDE = -I include/
-APP = philosophers
-FILES = $(wildcard src/*.c)
-FILES_OBJ = $(FILES:.c=.o)
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=undefined 
+CFLAGS_TREADS = -fsanitize=thread
+CFLAGS_ADDRESS = -fsanitize=address
+SRC = $(wildcard Source/*.c)
+OBJ = $(SRC:.c=.o)
+NAME = philosophers
 
-all: $(APP)
+all: $(NAME)
 
-$(APP): $(FILES_OBJ)
-	cc $(RULES) $(INCLUDE) $(FILES_OBJ) -o $(APP)
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -IInc/ $(CFLAGS_ADDRESS) $(OBJ) -o $(NAME)
 
-test: $(APP)
-	./philosophers 5 1 1 1 1
-	
 %.o: %.c
-	cc $(RULES) $(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -IInc/ $(CFLAGS_ADDRESS) -c $< -o $@
 
 clean:
-	rm -rf $(FILES_OBJ)
+	rm -f $(OBJ)
 
 fclean: clean
-	rm -rf $(APP)
+	rm -f $(NAME)
 
 re: fclean all
 
+.PHONY: all clean fclean re
