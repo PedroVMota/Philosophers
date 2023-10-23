@@ -2,7 +2,7 @@
 
 void	messages(char *str, t_philo *philo)
 {
-	u_int64_t	time;
+	unsigned long int	time;
 
 	pthread_mutex_lock(&philo->database->write);
 	time = get_time() - philo->database->start;
@@ -17,6 +17,7 @@ void	messages(char *str, t_philo *philo)
 }
 
 void take_forks(t_philo *philo){
+
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(philo->right_fork);
 }

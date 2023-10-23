@@ -59,7 +59,7 @@ typedef struct s_philo
 
 typedef struct s_main
 {
-	pthread_t *philosophers;
+	pthread_t *tid;
 	pthread_mutex_t *forks;
 	t_philo *philo;
 
@@ -93,6 +93,7 @@ void take_forks(t_philo *philo);
 void drop_forks(t_philo *philo);
 void eat(t_philo *philo);
 int ft_usleep(useconds_t time);
+bool create_threads(t_data *db);
 void messages(char *str, t_philo *philo);
 int ft_strcmp(const char *s1, const char *s2);
 #endif

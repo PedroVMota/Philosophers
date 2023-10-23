@@ -2,9 +2,10 @@
 
 static bool initallocation(t_data *database)
 {
-	database->philosophers = malloc(sizeof(pthread_t) * database->_number_of_philosophers);
-	if (!database->philosophers)
+	database->tid = malloc(sizeof(pthread_t) * database->_number_of_philosophers);
+	if (!database->tid)
 		return error(ALLOC_THREAD, database);
+	printf("Allocating %d forks\n", database->_number_of_philosophers);
 	database->forks = malloc(sizeof(pthread_mutex_t) * database->_number_of_philosophers);
 	if (!database->forks)
 		return error(ALLOC_FORK, database);
@@ -33,22 +34,47 @@ bool initdata(t_data *database, char **av)
 	return false;
 }
 
-static bool initmutex(t_data *database)
+void ForkChecker(t_data *db)
 {
 	int i;
 
 	i = -1;
-	while (++i < database->_number_of_philosophers)
+	bool flag = false;
+	while (++i < db->_number_of_philosophers)
 	{
-		pthread_mutex_init(&database->forks[i], NULL);
+		if (db->philo[i].left_fork == db->philo[i].right_fork)
+			flag = true;
+		else if (i == 0 && db->philo[i].left_fork == &db->forks[0] && db->philo[i].right_fork == &db->forks[db->_number_of_philosophers - 1])
+			flag = true;
+		else if (i == db->_number_of_philosophers - 1 && db->philo[i].left_fork == &db->forks[db->_number_of_philosophers - 1] && db->philo[i].right_fork == &db->forks[0])
+			flag = false;
+		else if (db->philo[i].left_fork == &db->forks[i - 1] && db->philo[i].right_fork == &db->forks[i])
+			flag = false;
+		else
+			flag = true;
 	}
-	database->philo[0].left_fork = &database->forks[0];
-	database->philo[0].right_fork = &database->forks[database->_number_of_philosophers - 1];
-	i = 1;
-	while (++i < database->_number_of_philosophers)
+	if (flag)
 	{
-		database->philo[i].left_fork = &database->forks[i - 1];
-		database->philo[i].right_fork = &database->forks[i];
+		printf("Forks are not allocated properly\n");
+		exit(1);
+	}
+}
+
+static bool initmutex(t_data *db)
+{
+	int i;
+
+	i = -1;
+	while (++i < db->_number_of_philosophers)
+		pthread_mutex_init(&db->forks[i], NULL);
+	db->philo[0].left_fork = &db->forks[0];
+	db->philo[0].right_fork = &db->forks[db->_number_of_philosophers - 1];
+	i = 1;
+	while (i < db->_number_of_philosophers)
+	{
+		db->philo[i].left_fork = &db->forks[i - 1];
+		db->philo[i].right_fork = &db->forks[i];
+		i++;
 	}
 	return false;
 }
@@ -79,5 +105,7 @@ bool init(char **av, t_data *database)
 	if (initmutex(database))
 		return true;
 	set_philo_data(database);
+	ForkChecker(database);
+
 	return false;
 }

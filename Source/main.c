@@ -16,9 +16,9 @@ bool solo(t_data *database)
 {
 	database->start = get_time();
 	printf("TimeStamp: %lu ms\n", get_time() - database->start);
-	if (pthread_create(&database->philosophers[0], NULL, &routine, &database->philo[0]))
+	if (pthread_create(&database->tid[0], NULL, &routine, &database->philo[0]))
 		return error(TH_ERR, database);
-	pthread_detach(database->philosophers[0]);
+	pthread_detach(database->tid[0]);
 	while (database->_is_dead == 0)
 		usleep(0);
 	return false;
@@ -34,10 +34,10 @@ bool error(char *msg, t_data *database)
 
 static void delete_mallocs(t_data *database)
 {
-	if (database->philosophers)
+	if (database->tid)
 	{
-		free(database->philosophers);
-		database->philosophers = NULL;
+		free(database->tid);
+		database->tid = NULL;
 	}
 	if (database->forks)
 	{
@@ -57,8 +57,11 @@ void ft_exit(t_data *database)
 	i = -1;
 	while (++i < database->_number_of_philosophers)
 	{
-		pthread_mutex_destroy(&database->forks[i]);
-		pthread_mutex_destroy(&database->philo[i].lock);
+		if (database->forks)
+		{
+			pthread_mutex_destroy(&database->forks[i]);
+			pthread_mutex_destroy(&database->philo[i].lock);
+		}
 	}
 	pthread_mutex_destroy(&database->write);
 	pthread_mutex_destroy(&database->lock);
@@ -68,6 +71,10 @@ void ft_exit(t_data *database)
 int main(int ac, char **av)
 {
 	t_data database;
+
+	database.forks = NULL;
+	database.philo = NULL;
+	database.tid = NULL;
 	if (ac < 5 || ac > 6)
 		return (1);
 	if (input(&av[1]))
@@ -76,5 +83,8 @@ int main(int ac, char **av)
 		return (1);
 	if (database._number_of_philosophers == 1)
 		solo(&database);
+	else if (database._number_of_philosophers > 1)
+		if (create_threads(&database))
+			return (1);
 	ft_exit(&database);
 }
