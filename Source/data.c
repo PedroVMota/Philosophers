@@ -11,6 +11,9 @@ static bool initallocation(t_data *database)
 	database->philo = malloc(sizeof(t_philo) * database->_number_of_philosophers);
 	if (!database->philo)
 		return error(ALLOC_PHILO, database);
+	database->edit = malloc(sizeof(t_philo) * database->_number_of_philosophers);
+	if (!database->edit)
+		return error(ALLOC_PHILO, database);
 	return false;
 }
 
@@ -44,11 +47,13 @@ static bool initmutex(t_data *database)
 	}
 	database->philo[0].left_fork = &database->forks[0];
 	database->philo[0].right_fork = &database->forks[database->_number_of_philosophers - 1];
+	database->philo[0].edit = &database->edit[0];
 	i = 1;
 	while (++i < database->_number_of_philosophers)
 	{
 		database->philo[i].left_fork = &database->forks[i - 1];
 		database->philo[i].right_fork = &database->forks[i];
+		database->philo[i].edit = &database->edit[i];
 	}
 	return false;
 }
@@ -64,7 +69,6 @@ static void set_philo_data(t_data *database)
 		database->philo[i]._eat_count = 0;
 		database->philo[i]._is_eating = false;
 		database->philo[i]._time_to_die = database->_time_to_die;
-		database->philo[i]._mode = 0;
 		database->philo[i].database = database;
 		pthread_mutex_init(&database->philo[i].lock, NULL);
 	}

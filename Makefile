@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=undefined 
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 CFLAGS_TREADS = -fsanitize=thread
 CFLAGS_ADDRESS = -fsanitize=address
 SRC = $(wildcard Source/*.c)

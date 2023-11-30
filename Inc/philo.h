@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:21:32 by pedro             #+#    #+#             */
-/*   Updated: 2023/09/24 08:47:28 by pedro            ###   ########.fr       */
+/*   Updated: 2023/11/26 22:10:47 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,31 @@
 
 typedef struct s_philo
 {
-	struct s_main *database;
+	__uint64_t _id;
 	pthread_t thread_id;
 
-	int _id;
-	int _eat_count;
-	int _mode;
-	bool _is_eating;
 	__uint64_t _time_to_die;
+	__uint64_t _time_to_eat;
+	__uint64_t _time_to_sleep;
+	__uint64_t last_meal;
+
+	int _eat_count;
+	int _meals_eaten;
+
+	bool _is_eating;
 	pthread_mutex_t lock;
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *right_fork;
+	pthread_mutex_t *edit;
+
+	struct s_main *database;
 } t_philo;
 
 typedef struct s_main
 {
 	pthread_t *philosophers;
 	pthread_mutex_t *forks;
+	pthread_mutex_t *edit;
 	t_philo *philo;
 
 	int _number_of_philosophers;
@@ -95,4 +103,6 @@ void eat(t_philo *philo);
 int ft_usleep(useconds_t time);
 void messages(char *str, t_philo *philo);
 int ft_strcmp(const char *s1, const char *s2);
+void *soloroutine(void *ph_ptr);
+void *monitor(void *ph_ptr);
 #endif

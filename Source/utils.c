@@ -10,7 +10,7 @@ __uint64_t get_time(void)
 
 int ft_usleep(useconds_t time)
 {
-	__ino64_t start;
+	__int64_t start;
 
 	start = get_time();
 	while ((get_time() - start) < time)
