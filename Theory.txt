@@ -1,9 +1,0 @@
-Theory:
-	Paramters:
-		Number of Philosophers must be (> 1)
-		Time to Die (ms) < 0;
-		Time to Eat (ms) < 0;
-		Time to Sleep (ms) < 0;
-		Number of times to eat (ms) == 0 ? (1 time) : (n times)
-	
-		
