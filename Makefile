@@ -9,10 +9,10 @@ NAME = philosophers
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -IInc/ $(CFLAGS_TREADS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) -IInc/ $(OBJ) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -IInc/ $(CFLAGS_TREADS) -c $< -o $@
+	$(CC) $(CFLAGS) -IInc/ -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
@@ -23,6 +23,6 @@ fclean: clean
 re: fclean all
 
 test: $(NAME)
-	./$(NAME) 2 800 200 200 10
+	valgrind --tool=helgrind --log-file=helgrind_output.txt ./$(NAME) 2 800 200 200 10
 
 .PHONY: all clean fclean re

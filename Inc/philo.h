@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:21:32 by pedro             #+#    #+#             */
-/*   Updated: 2023/12/01 12:09:01 by pedro            ###   ########.fr       */
+/*   Updated: 2023/12/01 20:28:19 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,16 @@
 # define TIME_ERR "UNABLE TO RETRIVE UTC"
 //	philo_msg
 # define TAKE_FORKS "has taken a fork"
+# define DROP_FORKS "has dropped a fork"
 # define THINKING "is thinking"
 # define SLEEPING "is sleeping"
 # define EATING "is eating"
 # define DIED "died"
+
+#define RED "\033[0;31m"
+#define GREEN "\033[0;32m"
+#define YELLOW "\033[0;33m"
+#define RESET "\033[0m"
 
 # define INFO(msg) printf("\033[0;33m%s\033[0m", msg)
 
