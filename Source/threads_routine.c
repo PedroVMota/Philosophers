@@ -6,7 +6,9 @@ void *soloroutine(void *ph_ptr)
 
 	philo = (t_philo *)ph_ptr;
 	(void)philo;
+	pthread_mutex_lock(&philo->lock);
 	philo->last_meal = get_time();
+	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_lock(philo->left_fork);
 	print_dead(philo);
 	pthread_mutex_unlock(philo->left_fork);
@@ -116,6 +118,7 @@ void routine_setup(t_data *db)
 			return;
 		usleep(150);
 	}
+	usleep(200);
 	routine_supervisor(db);
 	i = -1;
 	while (++i < db->db_n_philo)

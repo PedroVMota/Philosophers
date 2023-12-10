@@ -20,6 +20,7 @@ static bool	initallocation(t_data *database)
 bool	initdata(t_data *database, char **av)
 {
 	database->db_n_philo = ft_atoi(av[0]);
+	printf("n_philo: %d\n", database->db_n_philo);
 	database->db_time_to_die = ft_atoi(av[1]);
 	database->db_time_to_eat = ft_atoi(av[2]);
 	database->db_time_to_sleep = ft_atoi(av[3]);
