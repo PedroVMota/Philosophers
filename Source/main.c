@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedro <pedro@student.42.fr>                +#+  +:+       +#+        */
+/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:38:49 by pedro             #+#    #+#             */
-/*   Updated: 2023/12/01 11:04:15 by pedro            ###   ########.fr       */
+/*   Updated: 2023/12/10 16:17:03 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static void	delete_mallocs(t_data *database)
 		database->philo = NULL;
 	}
 }
+
 void	ft_exit(t_data *database)
 {
 	int	i;
 
 	i = -1;
-	while (++i < database->db_n_philo)
+	while (++i < database->ph_n)
 	{
 		pthread_mutex_destroy(&database->forks[i]);
 		pthread_mutex_destroy(&database->philo[i].lock);
@@ -55,7 +56,8 @@ void	ft_exit(t_data *database)
 
 int	main(int ac, char **av)
 {
-	t_data database;
+	t_data	database;
+
 	if (ac < 5 || ac > 6)
 		return (1);
 	if (input(&av[1]))

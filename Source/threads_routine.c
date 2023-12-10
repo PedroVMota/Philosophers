@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads_routine.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/10 16:06:11 by pedromota         #+#    #+#             */
+/*   Updated: 2023/12/10 16:16:34 by pedromota        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void *soloroutine(void *ph_ptr)
+void	philo_eat(t_philo *ph);
+
+void	*soloroutine(void *ph_ptr)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)ph_ptr;
 	(void)philo;
@@ -16,73 +30,46 @@ void *soloroutine(void *ph_ptr)
 	return (NULL);
 }
 
-void philo_eat(t_philo *ph)
+void	*routine(void *ph_ptr)
 {
-	if (ph->_id % 2 == 0)
-	{
-		pthread_mutex_lock(ph->left_fork);
-		messages(TAKE_FORKS, ph);
-		pthread_mutex_lock(ph->right_fork);
-		messages(TAKE_FORKS, ph);
-	}
-	else
-	{
-		pthread_mutex_lock(ph->right_fork);
-		messages(TAKE_FORKS, ph);
-		pthread_mutex_lock(ph->left_fork);
-		messages(TAKE_FORKS, ph);
-	}
-	pthread_mutex_lock(&ph->lock);
-	ph->last_meal = get_time();
-	messages(EATING, ph);
-	ft_usleep(ph->database->db_time_to_eat);
-	ph->_meals_eaten++;
-	pthread_mutex_unlock(&ph->lock);
-	pthread_mutex_unlock(ph->left_fork);
-	pthread_mutex_unlock(ph->right_fork);
-}
-
-void *routine(void *ph_ptr)
-{
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)ph_ptr;
-	if (philo->database->db_n_philo == 1)
+	if (philo->database->ph_n == 1)
 	{
 		soloroutine((void *)philo);
 		return (NULL);
 	}
 	pthread_mutex_lock(&philo->database->lock);
-	while (!(philo->database->_is_dead) && philo->_meals_eaten < philo->database->db_n_time_eat)
+	while (!(philo->database->_is_dead)
+		&& philo->meal_n < philo->database->eat_n)
 	{
 		pthread_mutex_unlock(&philo->database->lock);
 		philo_eat(philo);
 		messages(SLEEPING, philo);
-		ft_usleep(philo->database->db_time_to_sleep);
+		ft_usleep(philo->database->sle_t);
 		messages(THINKING, philo);
-		// usleep(2000);
 		pthread_mutex_lock(&philo->database->lock);
 	}
 	pthread_mutex_unlock(&philo->database->lock);
 	return (NULL);
 }
 
-void *monitor(void *db)
+void	*monitor(void *db)
 {
-	t_data *data;
-	int i;
+	t_data	*data;
+	int		i;
 
 	data = db;
-	i = -1;
-	while (data->db_full_philos < data->db_n_philo)
+	while (data->f_philo < data->ph_n)
 	{
 		i = -1;
-		while (++i < data->db_n_philo)
+		while (++i < data->ph_n)
 		{
 			pthread_mutex_lock(&data->philo[i].lock);
-			if (data->philo[i]._meals_eaten == data->db_n_time_eat)
-				data->db_full_philos++;
-			if (get_time() - data->philo[i].last_meal > (__uint64_t)data->db_time_to_die)
+			if (data->philo[i].meal_n == data->eat_n)
+				data->f_philo++;
+			if (get_time() - data->philo[i].last_meal > (__uint64_t)data->die_t)
 			{
 				messages(DIED, &data->philo[i]);
 				pthread_mutex_lock(&data->lock);
@@ -97,32 +84,32 @@ void *monitor(void *db)
 	return (NULL);
 }
 
-void routine_supervisor(t_data *db)
+void	routine_supervisor(t_data *db)
 {
-	pthread_t th_monitor;
+	pthread_t	th_monitor;
 
 	if (pthread_create(&th_monitor, NULL, &monitor, (void *)db))
-		return;
+		return ;
 	if (pthread_join(th_monitor, NULL))
-		return;
+		return ;
 }
 
-void routine_setup(t_data *db)
+void	routine_setup(t_data *db)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while (++i < db->db_n_philo)
+	while (++i < db->ph_n)
 	{
 		if (pthread_create(&db->philosophers[i], NULL, &routine, &db->philo[i]))
-			return;
+			return ;
 		usleep(150);
 	}
 	usleep(200);
 	routine_supervisor(db);
 	i = -1;
-	while (++i < db->db_n_philo)
+	while (++i < db->ph_n)
 		if (pthread_join(db->philosophers[i], NULL))
-			return;
-	return;
+			return ;
+	return ;
 }
