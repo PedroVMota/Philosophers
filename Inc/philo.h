@@ -6,7 +6,7 @@
 /*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:21:32 by pedro             #+#    #+#             */
-/*   Updated: 2023/12/01 20:28:19 by pedromota        ###   ########.fr       */
+/*   Updated: 2023/12/10 11:23:11 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <limits.h>
 # include <unistd.h>
 
 //	alloc_err

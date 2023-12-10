@@ -64,6 +64,7 @@ void *routine(void *ph_ptr)
 		usleep(2000);
 		pthread_mutex_lock(&philo->database->lock);
 	}
+	pthread_mutex_unlock(&philo->database->lock);
 	return (NULL);
 }
 

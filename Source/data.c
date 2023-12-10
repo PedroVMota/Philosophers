@@ -26,7 +26,7 @@ bool	initdata(t_data *database, char **av)
 	if (av[4])
 		database->db_n_time_eat = ft_atoi(av[4]);
 	else
-		database->db_n_time_eat = INT16_MAX;
+		database->db_n_time_eat = INT_MAX;
 	if (database->db_n_philo < 1 || database->db_n_philo > 200
 		|| database->db_time_to_die < 0 || database->db_time_to_eat < 0
 		|| database->db_time_to_sleep < 0)
