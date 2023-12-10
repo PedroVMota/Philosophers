@@ -28,8 +28,8 @@ bool	initdata(t_data *database, char **av)
 	else
 		database->db_n_time_eat = INT_MAX;
 	if (database->db_n_philo < 1 || database->db_n_philo > 200
-		|| database->db_time_to_die < 0 || database->db_time_to_eat < 0
-		|| database->db_time_to_sleep < 0)
+		|| database->db_time_to_die <= 0 || database->db_time_to_eat <= 0
+		|| database->db_time_to_sleep <= 0 || database->db_n_time_eat <= 0)
 		return (error(ERR_INVALID_VALUES, NULL));
 	database->_is_dead = 0;
 	database->db_full_philos = 0;

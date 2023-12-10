@@ -32,15 +32,12 @@ void philo_eat(t_philo *ph)
 	}
 	pthread_mutex_lock(&ph->lock);
 	ph->last_meal = get_time();
-	// printf("%sPhilosopher %d is eating%s\n", GREEN, ph->_id, RESET);
 	messages(EATING, ph);
 	ft_usleep(ph->database->db_time_to_eat);
 	ph->_meals_eaten++;
 	pthread_mutex_unlock(&ph->lock);
 	pthread_mutex_unlock(ph->left_fork);
-	// printf("%sPhilosopher %d Droped The left fork%s\n", YELLOW, ph->_id, RESET);
 	pthread_mutex_unlock(ph->right_fork);
-	// printf("%sPhilosopher %d Droped The Right fork%s\n", YELLOW, ph->_id, RESET);
 }
 
 void *routine(void *ph_ptr)
@@ -61,7 +58,7 @@ void *routine(void *ph_ptr)
 		messages(SLEEPING, philo);
 		ft_usleep(philo->database->db_time_to_sleep);
 		messages(THINKING, philo);
-		usleep(2000);
+		// usleep(2000);
 		pthread_mutex_lock(&philo->database->lock);
 	}
 	pthread_mutex_unlock(&philo->database->lock);
@@ -86,15 +83,15 @@ void *monitor(void *db)
 			if (get_time() - data->philo[i].last_meal > (__uint64_t)data->db_time_to_die)
 			{
 				messages(DIED, &data->philo[i]);
+				pthread_mutex_lock(&data->lock);
 				data->_is_dead = 1;
+				pthread_mutex_unlock(&data->lock);
 				pthread_mutex_unlock(&data->philo[i].lock);
 				return (NULL);
 			}
 			pthread_mutex_unlock(&data->philo[i].lock);
 		}
-		(void)i;
 	}
-	printf("%sPhilosopher %d is exiting%s\n", GREEN, i, RESET);
 	return (NULL);
 }
 
@@ -117,9 +114,9 @@ void routine_setup(t_data *db)
 	{
 		if (pthread_create(&db->philosophers[i], NULL, &routine, &db->philo[i]))
 			return;
-		usleep(50000);
+		usleep(150);
 	}
-	// routine_supervisor(db);
+	routine_supervisor(db);
 	i = -1;
 	while (++i < db->db_n_philo)
 		if (pthread_join(db->philosophers[i], NULL))
