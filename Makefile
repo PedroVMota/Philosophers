@@ -1,4 +1,4 @@
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g
 CFLAGS_TREADS = -fsanitize=thread
 CFLAGS_ADDRESS = -fsanitize=address

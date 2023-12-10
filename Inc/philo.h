@@ -6,19 +6,19 @@
 /*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:21:32 by pedro             #+#    #+#             */
-/*   Updated: 2023/12/10 11:23:11 by pedromota        ###   ########.fr       */
+/*   Updated: 2023/12/10 17:37:49 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <limits.h>
 # include <unistd.h>
 
 //	alloc_err
@@ -42,13 +42,6 @@
 # define EATING "is eating"
 # define DIED "died"
 
-#define RED "\033[0;31m"
-#define GREEN "\033[0;32m"
-#define YELLOW "\033[0;33m"
-#define RESET "\033[0m"
-
-# define INFO(msg) printf("\033[0;33m%s\033[0m", msg)
-
 typedef struct s_philo
 {
 	int				_id;
@@ -66,7 +59,7 @@ typedef struct s_philo
 
 	int				*any_died;
 
-	unsigned long time_start;
+	unsigned long	time_start;
 	pthread_mutex_t	lock;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -81,14 +74,14 @@ typedef struct s_main
 	pthread_mutex_t	*edit;
 	t_philo			*philo;
 
-	int				db_n_philo;
-	long long		db_time_to_die;
-	long long		db_time_to_eat;
-	long long		db_time_to_sleep;
-	long long		db_n_time_eat;
+	int				n_p;
+	long long		t_die;
+	long long		t_eat;
+	long long		t_sle;
+	long long		n_eat;
 
-	int				_is_dead;
-	int				db_full_philos;
+	int				b_dead;
+	int				f_ph;
 
 	__uint64_t		start;
 
