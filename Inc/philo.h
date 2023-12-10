@@ -6,7 +6,7 @@
 /*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:21:32 by pedro             #+#    #+#             */
-/*   Updated: 2023/12/10 11:23:11 by pedromota        ###   ########.fr       */
+/*   Updated: 2023/12/10 12:43:31 by pedromota        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ typedef struct s_main
 	pthread_mutex_t	*edit;
 	t_philo			*philo;
 
-	int				db_n_philo;
-	long long		db_time_to_die;
-	long long		db_time_to_eat;
-	long long		db_time_to_sleep;
-	long long		db_n_time_eat;
+	int				n_p;
+	long long		db_nttd;
+	long long		db_tte;
+	long long		db_tts;
+	long long		db_nte;
 
 	int				_is_dead;
 	int				db_full_philos;

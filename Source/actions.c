@@ -1,12 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pedromota <pedromota@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/10 12:39:04 by pedromota         #+#    #+#             */
+/*   Updated: 2023/12/10 15:13:19 by pedromota        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void messages(char *str, t_philo *philo)
+void	philo_eat(t_philo *ph)
 {
-	u_int64_t time;
+	if (ph->_id % 2 == 0)
+	{
+		pthread_mutex_lock(ph->left_fork);
+		messages(TAKE_FORKS, ph);
+		pthread_mutex_lock(ph->right_fork);
+		messages(TAKE_FORKS, ph);
+	}
+	else
+	{
+		pthread_mutex_lock(ph->right_fork);
+		messages(TAKE_FORKS, ph);
+		pthread_mutex_lock(ph->left_fork);
+		messages(TAKE_FORKS, ph);
+	}
+	pthread_mutex_lock(&ph->lock);
+	ph->last_meal = get_time();
+	pthread_mutex_unlock(&ph->lock);
+	messages(EATING, ph);
+	ft_usleep(ph->database->db_tte);
+	pthread_mutex_lock(&ph->lock);
+	ph->_meals_eaten++;
+	pthread_mutex_unlock(&ph->lock);
+	pthread_mutex_unlock(ph->left_fork);
+	pthread_mutex_unlock(ph->right_fork);
+}
+
+void	messages(char *str, t_philo *philo)
+{
+	u_int64_t	time;
 
 	pthread_mutex_lock(&philo->database->write);
 	pthread_mutex_lock(&philo->database->lock);
-
 	time = get_time() - philo->time_start;
 	if (ft_strcmp(DIED, str) == 0 && philo->database->_is_dead == 0)
 	{
